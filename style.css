@@ -1,0 +1,32 @@
+
+body {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+input,
+button {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  font-size: 1em;
+}
+
+.output {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.2em;
+  white-space: pre-line;
+}
+
+.map-buttons {
+  margin-top: 15px;
+}
+
+.map-buttons button {
+  width: auto;
+  margin-right: 10px;
+}

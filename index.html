@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ITM to GPS Coordinate Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.15.0/proj4.js"></script>
+</head>
+<body>
+  <h2>Convert Israeli Grid (ITM) to GPS (WGS84)</h2>
+
+  <label for="x">X Coordinate (ITM):</label>
+  <input type="number" id="x" placeholder="e.g., 219529" />
+
+  <label for="y">Y Coordinate (ITM):</label>
+  <input type="number" id="y" placeholder="e.g., 626907" />
+
+  <button id="convertBtn">Convert</button>
+
+  <div class="output" id="result"></div>
+
+  <div class="map-buttons" id="mapButtons" style="display: none;">
+    <button id="openMapsBtn">Open in Maps</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
