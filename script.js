@@ -1,3 +1,5 @@
+proj4.defs("EPSG:2039", "+proj=tmerc +lat_0=31.7343936111111 +lon_0=35.2045169444444 +k=1.0000067 +x_0=219529.584 +y_0=626907.39 +ellps=GRS80 +units=m +no_defs");
+
 let currentLat = null;
 let currentLon = null;
 
@@ -11,23 +13,14 @@ function convert() {
     return;
   }
 
-  const url = `https://www.govmap.gov.il/CoordinateConversionHandler.ashx?x=${x}&y=${y}&f=itm`;
+  const [lon, lat] = proj4("EPSG:2039", "WGS84", [x, y]);
+  currentLat = lat.toFixed(6);
+  currentLon = lon.toFixed(6);
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      currentLat = parseFloat(data.y).toFixed(6);
-      currentLon = parseFloat(data.x).toFixed(6);
+  document.getElementById("result").innerText =
+    `GPS Coordinates:\nLatitude: ${currentLat}\nLongitude: ${currentLon}`;
 
-      document.getElementById("result").innerText =
-        `GPS Coordinates:\nLatitude: ${currentLat}\nLongitude: ${currentLon}`;
-
-      document.getElementById("mapButtons").style.display = "block";
-    })
-    .catch(error => {
-      document.getElementById("result").innerText = "Error converting coordinates.";
-      console.error("Conversion error:", error);
-    });
+  document.getElementById("mapButtons").style.display = "block";
 }
 
 function openInMaps() {
