@@ -1,4 +1,6 @@
-proj4.defs("EPSG:2039", "+proj=tmerc +lat_0=31.7343936111111 +lon_0=35.2045169444444 +k=1.0000067 +x_0=219529.584 +y_0=626907.39 +ellps=GRS80 +units=m +no_defs");
+proj4.defs("EPSG:2039", 
+  "+proj=tmerc +lat_0=31.7343936111111+lon_0=35.2045169444444+k=1.0000067+x_0=219529.584+y_0=626907.39 +ellps=GRS80+towgs84=13.07,0.22,0.0,0,0,0,0 +units=m +no_defs");
+
 
 let currentLat = null;
 let currentLon = null;
