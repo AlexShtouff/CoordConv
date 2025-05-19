@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ITM to GPS Coordinate Converter</title>
+  <title>IG05/IG12 to GPS Coordinate Converter</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.15.0/proj4.js"></script>
 </head>
 <body>
-  <h2>Convert Israeli Grid (ITM) to GPS (WGS84)</h2>
+  <h2>Convert IG05/IG12 (Israeli Grid) to GPS (WGS84)</h2>
 
-  <label for="x">X Coordinate (ITM):</label>
-  <input type="number" id="x" placeholder="e.g., 219529" />
+  <label for="x">X Coordinate:</label>
+  <input type="number" id="x" placeholder="e.g., 186894" />
 
-  <label for="y">Y Coordinate (ITM):</label>
-  <input type="number" id="y" placeholder="e.g., 626907" />
+  <label for="y">Y Coordinate:</label>
+  <input type="number" id="y" placeholder="e.g., 692891" />
 
   <button id="convertBtn">Convert</button>
 
@@ -23,7 +23,6 @@
     <button id="openMapsBtn">Open in Maps</button>
   </div>
 
-  <!-- Сюда переместили script -->
   <script src="script.js"></script>
 </body>
 </html>
