@@ -524,15 +524,15 @@ if (calcHeightBtn) {
         staticMeasurementData = [
             // Metadata (Inputted)
             
-            { Key: "Receiver number", Value: receiverNum ? receiverNum.value : 'N/A' },
+			{ Key: "Receiver number", Value: receiverNum ? receiverNum.value : 'N/A' },
 			{ Key: "Antenna number", Value: antNum ? antNum.value : 'N/A' },
 			{ Key: "Surveyor", Value: surveyorNameInput ? surveyorNameInput.value : 'N/A' },
             { Key: "Date", Value: date },
             { Key: "Start Time", Value: startTimeInput ? startTimeInput.value : 'N/A' },
             { Key: "End Time", Value: endTimeInput ? endTimeInput.value : 'N/A' },
 			{ Key: "Measurement #", Value: measurementNumInput ? measurementNumInput.value : 'N/A' },
-            { Key: "Point Name in Receiver", Value: pointNameInReceiver },
-			{ Key: "Point Name", Value: pointName },
+            { Key: "Point Name", Value: pointName },
+            { Key: "Point Name in Receiver", Value: pointNameInReceiver ? pointNameInReceiver.value : 'N/A' },
             
             // Raw Inputs (Inputted)
             { Key: "Antenna Slant Height 1 (m)", Value: h1.toFixed(4) },
@@ -877,3 +877,4 @@ navigator.geolocation?.getCurrentPosition(
         console.warn('Geolocation error:', error.message);
     }
 );
+
