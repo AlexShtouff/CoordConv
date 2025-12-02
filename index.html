@@ -458,15 +458,32 @@
                         </legend>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" id="surveyor" placeholder="Surveyor Name" class="input-field">
-                            <input type="text" id="point-name" placeholder="Point Name" class="input-field">
-                            <input type="text" id="receiver-num" placeholder="Receiver #" class="input-field">
-                            <input type="text" id="receiver-point" placeholder="Point Name in Receiver"
-                                class="input-field">
-                            <input type="text" id="antenna-num" placeholder="Antenna Number" class="input-field">
-                            <input type="date" id="survey-date" text="time" class="input-field">
-                            <input type="time" id="start-time" class="input-field">
-                            <input type="time" id="end-time" class="input-field">
+							<input type="text" id="surveyor-name" placeholder="Surveyor Name"
+								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+                            <input type="text" id="antenna-num" placeholder="Antenna Number" 
+								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+							<input type="text" id="receiver-num" placeholder="Receiver #" 
+								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+							<input type="text" id="point-name" placeholder="Point Name"
+								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+							<input type="text" id="receiver-point" placeholder="Point Name in Receiver"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+							<input type="text" id="measurement-num" placeholder="Measurement #"
+								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
+                            <div>
+								<label for="measurement-date" class="block text-sm font-medium text-gray-700">Date:</label>
+								<input type="date" id="measurement-date"
+									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+							</div>
+							<div>
+								<label for="start-time" class="block text-sm font-medium text-gray-700">Start Time:</label>
+								<input type="time" id="start-time"
+									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+								<label for="end-time" class="block text-sm font-medium text-gray-700">End Time:</label>
+								<input type="time" id="end-time" 
+									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+								
+							</div>
                         </div>
                     </fieldset>
                     <!-- Height Frame -->
@@ -534,7 +551,7 @@
                         </div>
                     </fieldset>
                     <div class="text-center mb-10">
-                        <button id="save-btn"
+                        <button id="save-height-btn"
                             class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105">
                             Save
                         </button>
