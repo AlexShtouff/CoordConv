@@ -502,7 +502,11 @@ if (calcHeightBtn) {
         }
         const O_pahit = 0.14;
 
-        const VA = (h1 + h2) / 2 - R_ant - O_ant;
+        const va_vert1 = Math.sqrt(h1 * h1 - R_ant * R_ant);
+        const va_vert2 = Math.sqrt(h2 * h2 - R_ant * R_ant);
+
+        const VA = (va_vert1 + va_vert2) / 2 - O_ant;
+
         const VP = pHeight - O_pahit;
         const diff = Math.abs(VA - VP);
         const average = (VA + VP) / 2;
