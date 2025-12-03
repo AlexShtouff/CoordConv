@@ -498,7 +498,7 @@ if (calcHeightBtn) {
         } else if (selectedDevice === 'topcon') {
             R_ant = 0.149; O_ant = 0.03;
         } else {
-            R_ant = 0.16981; O_ant = 0.04434;
+            R_ant = 0; O_ant = 0;
         }
         const O_pahit = 0.14;
 
