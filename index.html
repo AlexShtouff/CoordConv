@@ -468,10 +468,10 @@
 								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
 							<input type="text" id="receiver-point" placeholder="Point Name in Receiver"
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
-							<input type="text" id="measurement-num" placeholder="Measurement #"
+							<input type="text" id="measurement-num" placeholder="Maaraha #"
 								class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 col-span-1 md:col-span-2">
                             <div>
-								<label for="measurement-date" class="block text-sm font-medium text-gray-700">Date:</label>
+								<label for="measurement-date" class="block text-sm font-medium text-gray-700">Start Date:</label>
 								<input type="date" id="measurement-date"
 									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
 							</div>
@@ -479,10 +479,10 @@
 								<label for="start-time" class="block text-sm font-medium text-gray-700">Start Time:</label>
 								<input type="time" id="start-time"
 									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-								<label for="end-time" class="block text-sm font-medium text-gray-700">End Time:</label>
-								<input type="time" id="end-time" 
-									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-								
+								<!-- <label for="end-time" class="block text-sm font-medium text-gray-700">End Time:</label>
+								//<input type="time" id="end-time" 
+									//class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+								-->
 							</div>
                         </div>
                     </fieldset>
@@ -495,9 +495,9 @@
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Antenna</label>
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="ant-height-1" step="0.001" placeholder="Measure 1 (m)"
+                                <input type="number" id="ant-height-1" step="0.001" placeholder="Measure 1 (in meters)"
                                     class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <input type="number" id="ant-height-2" step="0.001" placeholder="Measure 2 (m)"
+                                <input type="number" id="ant-height-2" step="0.001" placeholder="Measure 2 (in meters)"
                                     class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             </div>
                         </div>
@@ -505,7 +505,7 @@
                         <!-- Pahit Input -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Pahit</label>
-                            <input type="number" id="pahit-height" step="0.001" placeholder="Pahit Height (m)"
+                            <input type="number" id="pahit-height" step="0.001" placeholder="Pahit Height (in meters)"
                                 class="block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
                     </fieldset>
@@ -550,7 +550,23 @@
                             <p id="height-error" class="text-red-500 text-sm mt-2 text-center"></p>
                         </div>
                     </fieldset>
-                    <div class="text-center mb-10">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+						<h3 class="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Measurement Stop</h3>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div>
+								<label for="end-date" class="block text-sm font-medium text-gray-700">End Date:</label>
+								<input type="date" id="end-date"
+									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+							</div>
+							<div>
+								<label for="end-time" class="block text-sm font-medium text-gray-700">End Time:</label>
+								<input type="time" id="end-time"
+									class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+							</div>
+						</div>
+					</div>
+
+					<div class="text-center mb-10">
                         <button id="save-height-btn"
                             class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105">
                             Save
@@ -597,4 +613,3 @@
 </body>
 
 </html>
-```
