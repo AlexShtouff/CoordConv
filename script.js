@@ -54,14 +54,14 @@ const measurementNumInput = document.getElementById('measurement-num'); // NEW
 const measurementDateInput = document.getElementById('measurement-date'); // NEW
 const startTimeInput = document.getElementById('start-time'); // NEW
 const endTimeInput = document.getElementById('end-time'); // NEW
-
+const endDateInput = document.getElementById('end-date');
 const resVA = document.getElementById('res-va');
 const resVP = document.getElementById('res-vp');
 const resDiff = document.getElementById('res-diff');
 const resAvg = document.getElementById('res-avg');
 const diffBox = document.getElementById('diff-box');
 const saveHeightBtn = document.getElementById('save-height-btn'); 
-let staticMeasurementData = null;
+let calculatedResults = null;
 
 // --- Global Variables ---
 let currentMode = 'manual';
@@ -478,20 +478,18 @@ if (calcHeightBtn) {
         
         heightError.textContent = '';
         heightResults.classList.add('hidden');
-        diffBox.classList.remove('bg-red-100'); // Reset highlight
+        diffBox.classList.remove('bg-red-100'); 
         
-        // Disable save button until new calculation is complete
         if (saveHeightBtn) saveHeightBtn.disabled = true;
 
         if (isNaN(h1) || isNaN(h2) || isNaN(pHeight)) {
             heightError.textContent = 'Please enter all three height measurements.';
             heightResults.classList.remove('hidden');
-            staticMeasurementData = null; // Clear old data
+            calculatedResults = null; // Clear old data
             return;
         }
 
-        // 2. Perform Calculation (Same as before)
-        // ... Define constants R_ant, O_ant, O_pahit ...
+        // 2. Perform Calculation
         let R_ant, O_ant;
         if (selectedDevice === 'trimble') {
             R_ant = 0.16981; O_ant = 0.04434;
@@ -505,9 +503,7 @@ if (calcHeightBtn) {
 
         const va_vert1 = Math.sqrt(h1 * h1 - R_ant * R_ant);
         const va_vert2 = Math.sqrt(h2 * h2 - R_ant * R_ant);
-
         const VA = (va_vert1 + va_vert2) / 2 - O_ant;
-
         const VP = Math.sqrt(pHeight * pHeight - R_pahit * R_pahit) - O_pahit;
         const diff = Math.abs(VA - VP);
         const average = (VA + VP) / 2;
@@ -522,34 +518,16 @@ if (calcHeightBtn) {
         resAvg.textContent = average.toFixed(4) + ' m';
         heightResults.classList.remove('hidden');
 
-        // 4. Store Results and Metadata
-        const pointName = pointNameInput ? pointNameInput.value : 'N/A';
-        const date = measurementDateInput ? measurementDateInput.value : 'N/A';
-
-        staticMeasurementData = [
-            // Metadata (Inputted)
-            
-			{ Key: "Receiver number", Value: receiverNum ? receiverNum.value : 'N/A' },
-			{ Key: "Antenna number", Value: antNum ? antNum.value : 'N/A' },
-			{ Key: "Surveyor", Value: surveyorNameInput ? surveyorNameInput.value : 'N/A' },
-            { Key: "Date", Value: date },
-            { Key: "Start Time", Value: startTimeInput ? startTimeInput.value : 'N/A' },
-            { Key: "End Time", Value: endTimeInput ? endTimeInput.value : 'N/A' },
-			{ Key: "Measurement #", Value: measurementNumInput ? measurementNumInput.value : 'N/A' },
-            { Key: "Point Name", Value: pointName },
-            { Key: "Point Name in Receiver", Value: pointNameInReceiver ? pointNameInReceiver.value : 'N/A' },
-            
-            // Raw Inputs (Inputted)
-            { Key: "Antenna Slant Height 1 (m)", Value: h1.toFixed(4) },
-            { Key: "Antenna Slant Height 2 (m)", Value: h2.toFixed(4) },
-            { Key: "Pahit Slant Height (m)", Value: pHeight.toFixed(4) },
-
-            // Calculated Outputs
-            { Key: "Antenna Vertical Height (m)", Value: VA.toFixed(4) },
-            { Key: "Pahit Vertical Height (m)", Value: VP.toFixed(4) },
-            { Key: "Average Height (m)", Value: average.toFixed(4) },
-            { Key: "Height Difference (m)", Value: diff.toFixed(4) },
-        ];
+        // 4. Store ONLY the Calculated Results (Not the metadata yet)
+        calculatedResults = {
+            h1: h1,
+            h2: h2,
+            pHeight: pHeight,
+            VA: VA,
+            VP: VP,
+            average: average,
+            diff: diff
+        };
         
         // 5. Enable Save Button
         if (saveHeightBtn) saveHeightBtn.disabled = false;
@@ -557,33 +535,62 @@ if (calcHeightBtn) {
 }
 if (saveHeightBtn) {
     saveHeightBtn.addEventListener('click', () => {
-        // --- 1. Validation: Ensure Data Exists ---
-        if (!staticMeasurementData) {
+        // --- 1. Validation: Ensure Calculations Exist ---
+        if (!calculatedResults) {
             alert('No calculated data available. Please calculate height first.');
             return;
         }
 
         // --- 2. Validation: Ensure Metadata is Filled ---
-        // We check the input elements directly to ensure they aren't empty
         const surveyor = surveyorNameInput.value.trim();
         const pointName = pointNameInput.value.trim();
-		const pointNameReceiver = pointNameInReceiver.value.trim();
-        const date = measurementDateInput.value.trim();
+        const pointNameReceiver = pointNameInReceiver.value.trim();
+        
+        const startDate = measurementDateInput.value.trim();
         const startTime = startTimeInput.value.trim();
-        const endTime = endTimeInput.value.trim(); // Make sure endTimeInput is defined in DOM elements!
+        
+        // NEW: Get Stop Data
+        const endDate = endDateInput ? endDateInput.value.trim() : '';
+        const endTime = endTimeInput.value.trim();
 
-        if (!surveyor || !pointName || !pointNameReceiver || !date || !startTime || !endTime) {
-            alert('⚠ Please fill in all fields (Surveyor, Point Name, Date, Start & End Time) before saving.');
+        if (!surveyor || !pointName || !pointNameReceiver || !startDate || !startTime || !endDate || !endTime) {
+            alert('⚠ Please fill in all fields (Surveyor, Point Names, Dates, Start & End Times) before saving.');
             return;
         }
 
-        // --- 3. Extract Filename Helpers ---
-        // We use the data already stored in staticMeasurementData for the Excel file
-        const filenamePoint = pointName || 'Point';
-        const filenameDate = date || 'Date';
-        const filenameTime = startTime.replace(/:/g, '-') || 'Time';
+        // --- 3. Build Data for Excel ---
+        const staticMeasurementData = [
+            // Metadata
+            { Key: "Receiver number", Value: receiverNum ? receiverNum.value : 'N/A' },
+            { Key: "Antenna number", Value: antNum ? antNum.value : 'N/A' },
+            { Key: "Surveyor", Value: surveyor },
+            { Key: "Measurement #", Value: measurementNumInput ? measurementNumInput.value : 'N/A' },
+            { Key: "Point Name", Value: pointName },
+            { Key: "Point Name in Receiver", Value: pointNameReceiver },
+            
+            // Time Data (Updated order)
+            { Key: "Start Date", Value: startDate },
+            { Key: "Start Time", Value: startTime },
+            { Key: "End Date", Value: endDate }, // 👈 Added to Excel
+            { Key: "End Time", Value: endTime },
+
+            // Raw Inputs (From stored calculations)
+            { Key: "Antenna Slant Height 1 (m)", Value: calculatedResults.h1.toFixed(4) },
+            { Key: "Antenna Slant Height 2 (m)", Value: calculatedResults.h2.toFixed(4) },
+            { Key: "Pahit Slant Height (m)", Value: calculatedResults.pHeight.toFixed(4) },
+
+            // Calculated Outputs
+            { Key: "Antenna Vertical Height (m)", Value: calculatedResults.VA.toFixed(4) },
+            { Key: "Pahit Vertical Height (m)", Value: calculatedResults.VP.toFixed(4) },
+            { Key: "Average Height (m)", Value: calculatedResults.average.toFixed(4) },
+            { Key: "Height Difference (m)", Value: calculatedResults.diff.toFixed(4) },
+        ];
 
         // --- 4. Generate Excel ---
+        const filenamePoint = pointName || 'Point';
+        const filenameDate = startDate || 'Date';
+        const filenameTime = startTime.replace(/:/g, '-') || 'Time';
+
         if (typeof XLSX !== 'undefined') {
             const worksheet = XLSX.utils.json_to_sheet(staticMeasurementData);
             
@@ -597,16 +604,19 @@ if (saveHeightBtn) {
             XLSX.writeFile(workbook, fileName);
             
             // --- 5. Cleanup: Clear Fields After Save ---
-            // Clear Metadata
             pointNameInput.value = '';
-			pointNameInReceiver.value = '';
+            pointNameInReceiver.value = '';
             measurementNumInput.value = '';
+            
+            // Clear Dates and Times
             measurementDateInput.value = '';
             startTimeInput.value = '';
+            endDateInput.value = ''; // 👈 Clear new input
             endTimeInput.value = '';
-           //if(document.getElementById('receiver-point')) document.getElementById('receiver-point').value = '';
-           // if(document.getElementById('antenna-num')) document.getElementById('antenna-num').value = '';
-           //if(document.getElementById('receiver-num')) document.getElementById('receiver-num').value = '';
+
+            if (surveyorNameInput) surveyorNameInput.value = '';
+            if (antNum) antNum.value = '';
+            if (receiverNum) receiverNum.value = '';
 
             // Clear Height Inputs
             antHeight1Input.value = '';
@@ -622,7 +632,7 @@ if (saveHeightBtn) {
             diffBox.classList.remove('bg-red-100');
 
             // Reset Data State
-            staticMeasurementData = null;
+            calculatedResults = null;
             saveHeightBtn.disabled = true;
 
         } else {
@@ -630,7 +640,6 @@ if (saveHeightBtn) {
         }
     });
 }
-
 // --- CSV Handling ---
 
 function parseCsvFile(file) {
@@ -882,4 +891,3 @@ navigator.geolocation?.getCurrentPosition(
         console.warn('Geolocation error:', error.message);
     }
 );
-
